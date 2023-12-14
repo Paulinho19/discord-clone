@@ -150,7 +150,7 @@ export const MembersModal = () => {
                                 }
                               >
                                 <ShieldCheck className="h-4 w-4 mr-2" />
-                                Guest
+                                Moderator
                                 {member.role === "MODERATOR" && (
                                   <Check className="h-4 w-4 ml-auto" />
                                 )}
