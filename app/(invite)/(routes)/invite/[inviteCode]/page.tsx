@@ -1,7 +1,8 @@
-import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+
+import { db } from "@/lib/db";
+import { currentProfile } from "@/lib/current-profile";
 
 interface InviteCodePageProps {
   params: {
@@ -51,7 +52,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
   });
 
   if (server) {
-    return redirect(`server/${server.id}`);
+    return redirect(`/servers/${server.id}`);
   }
 
   return null;
