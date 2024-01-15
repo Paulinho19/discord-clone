@@ -1,22 +1,24 @@
 "use client";
 
-import { Member, Message, Profile } from "@prisma/client";
-import { format } from "date-fns";
-import ChatWelcome from "./chat-welcome";
-import { useChatQuery } from "@/hooks/use-chat-query";
-import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment, useRef, ElementRef } from "react";
-import { ChatItem } from "./chat-item";
+import { format } from "date-fns";
+import { Member, Message, Profile } from "@prisma/client";
+import { Loader2, ServerCrash } from "lucide-react";
+
+import { useChatQuery } from "@/hooks/use-chat-query";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
+
+import { ChatWelcome } from "./chat-welcome";
+import { ChatItem } from "./chat-item";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
 type MessageWithMemberWithProfile = Message & {
   member: Member & {
-    profile: Profile;
-  };
-};
+    profile: Profile
+  }
+}
 
 interface ChatMessagesProps {
   name: string;
@@ -30,7 +32,7 @@ interface ChatMessagesProps {
   type: "channel" | "conversation";
 }
 
-const ChatMessages = ({
+export const ChatMessages = ({
   name,
   member,
   chatId,
@@ -43,19 +45,23 @@ const ChatMessages = ({
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatId}`;
   const addKey = `chat:${chatId}:messages`;
-  const updateKey = `chat:${chatId}:messages:update`;
+  const updateKey = `chat:${chatId}:messages:update` 
 
   const chatRef = useRef<ElementRef<"div">>(null);
   const bottomRef = useRef<ElementRef<"div">>(null);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    useChatQuery({
-      queryKey,
-      apiUrl,
-      paramKey,
-      paramValue,
-    });
-
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useChatQuery({
+    queryKey,
+    apiUrl,
+    paramKey,
+    paramValue,
+  });
   useChatSocket({ queryKey, addKey, updateKey });
   useChatScroll({
     chatRef,
@@ -63,9 +69,9 @@ const ChatMessages = ({
     loadMore: fetchNextPage,
     shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
     count: data?.pages?.[0]?.items?.length ?? 0,
-  });
+  })
 
-  if (status === "pending") {
+  if (status === "loading") {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
         <Loader2 className="h-7 w-7 text-zinc-500 animate-spin my-4" />
@@ -73,7 +79,7 @@ const ChatMessages = ({
           Loading messages...
         </p>
       </div>
-    );
+    )
   }
 
   if (status === "error") {
@@ -84,13 +90,18 @@ const ChatMessages = ({
           Something went wrong!
         </p>
       </div>
-    );
+    )
   }
 
   return (
     <div ref={chatRef} className="flex-1 flex flex-col py-4 overflow-y-auto">
       {!hasNextPage && <div className="flex-1" />}
-      {!hasNextPage && <ChatWelcome type={type} name={name} />}
+      {!hasNextPage && (
+        <ChatWelcome
+          type={type}
+          name={name}
+        />
+      )}
       {hasNextPage && (
         <div className="flex justify-center">
           {isFetchingNextPage ? (
@@ -98,7 +109,7 @@ const ChatMessages = ({
           ) : (
             <button
               onClick={() => fetchNextPage()}
-              className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 text-xs my-7 dark:hover:text-zinc-300 transition"
+              className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 text-xs my-4 dark:hover:text-zinc-300 transition"
             >
               Load previous messages
             </button>
@@ -128,7 +139,5 @@ const ChatMessages = ({
       </div>
       <div ref={bottomRef} />
     </div>
-  );
-};
-
-export default ChatMessages;
+  )
+}

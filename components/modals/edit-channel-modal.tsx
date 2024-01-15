@@ -5,6 +5,7 @@ import axios from "axios";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { ChannelType } from "@prisma/client";
 
 import {
   Dialog,
@@ -13,7 +14,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import {
   Form,
   FormControl,
@@ -22,9 +22,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import {
@@ -34,7 +33,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChannelType } from "@prisma/client";
 import { useEffect } from "react";
 
 const formSchema = z.object({
@@ -44,18 +42,16 @@ const formSchema = z.object({
       message: "Channel name is required.",
     })
     .refine((name) => name !== "general", {
-      message: 'Channel name can not be "general"',
+      message: "Channel name cannot be 'general'",
     }),
   type: z.nativeEnum(ChannelType),
 });
 
 export const EditChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
-
   const router = useRouter();
 
   const isModalOpen = isOpen && type === "editChannel";
-
   const { channel, server } = data;
 
   const form = useForm({
@@ -114,7 +110,7 @@ export const EditChannelModal = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-400 dark:text-secondary/70">
+                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                       Channel name
                     </FormLabel>
                     <FormControl>
@@ -162,7 +158,7 @@ export const EditChannelModal = () => {
                 )}
               />
             </div>
-            <DialogFooter className="bg-gray px-6 py-4">
+            <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
                 Save
               </Button>

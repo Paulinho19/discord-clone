@@ -13,7 +13,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import {
   Form,
   FormControl,
@@ -22,10 +21,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { FileUpload } from "../file-upload";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { FileUpload } from "@/components/file-upload";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 
@@ -40,7 +38,6 @@ const formSchema = z.object({
 
 export const CreateServerModal = () => {
   const { isOpen, onClose, type } = useModal();
-
   const router = useRouter();
 
   const isModalOpen = isOpen && type === "createServer";
@@ -79,7 +76,7 @@ export const CreateServerModal = () => {
           <DialogTitle className="text-2xl text-center font-bold">
             Create your server
           </DialogTitle>
-          <DialogDescription className="text-center text-zinc-600">
+          <DialogDescription className="text-center text-zinc-500">
             Give your server a personality with a name and an image. You can
             always change it later.
           </DialogDescription>
@@ -110,7 +107,7 @@ export const CreateServerModal = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-400 dark:text-secondary/70">
+                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                       Server name
                     </FormLabel>
                     <FormControl>
@@ -126,7 +123,7 @@ export const CreateServerModal = () => {
                 )}
               />
             </div>
-            <DialogFooter className="bg-gray px-6 py-4">
+            <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
                 Create
               </Button>

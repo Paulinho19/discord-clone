@@ -1,6 +1,7 @@
 "use client";
 
 import axios from "axios";
+import qs from "query-string";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,12 +14,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-
-import { Button } from "../ui/button";
-import { FileUpload } from "../file-upload";
-import qs from "query-string";
+import { Button } from "@/components/ui/button";
+import { FileUpload } from "@/components/file-upload";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 
@@ -76,7 +74,7 @@ export const MessageFileModal = () => {
           <DialogTitle className="text-2xl text-center font-bold">
             Add an attachment 🏞️
           </DialogTitle>
-          <DialogDescription className="text-center text-zinc-600">
+          <DialogDescription className="text-center text-zinc-500">
             Send a file as a message
           </DialogDescription>
         </DialogHeader>
@@ -101,7 +99,7 @@ export const MessageFileModal = () => {
                 />
               </div>
             </div>
-            <DialogFooter className="bg-gray px-6 py-4">
+            <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
                 Send
               </Button>

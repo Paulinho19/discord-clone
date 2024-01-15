@@ -1,19 +1,7 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-
+import axios from "axios";
 import qs from "query-string";
-
-import { useModal } from "@/hooks/use-modal-store";
-import { ServerWithMembersWithProfiles } from "@/types";
-import { ScrollArea } from "../ui/scroll-area";
-import { UserAvatar } from "../user-avatar";
 import {
   Check,
   Gavel,
@@ -25,7 +13,20 @@ import {
   ShieldQuestion,
 } from "lucide-react";
 import { useState } from "react";
+import { MemberRole } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useModal } from "@/hooks/use-modal-store";
+import { ServerWithMembersWithProfiles } from "@/types";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { UserAvatar } from "@/components/user-avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,9 +38,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MemberRole } from "@prisma/client";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 
 const roleIconMap = {
   GUEST: null,
@@ -89,7 +87,6 @@ export const MembersModal = () => {
       const response = await axios.patch(url, { role });
 
       router.refresh();
-
       onOpen("members", { server: response.data });
     } catch (error) {
       console.log(error);
@@ -130,7 +127,7 @@ export const MembersModal = () => {
                       <DropdownMenuContent side="left">
                         <DropdownMenuSub>
                           <DropdownMenuSubTrigger className="flex items-center">
-                            <ShieldQuestion className="h-4 w-4 mr-2" />
+                            <ShieldQuestion className="w-4 h-4 mr-2" />
                             <span>Role</span>
                           </DropdownMenuSubTrigger>
                           <DropdownMenuPortal>
@@ -158,7 +155,6 @@ export const MembersModal = () => {
                             </DropdownMenuSubContent>
                           </DropdownMenuPortal>
                         </DropdownMenuSub>
-
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => onKick(member.id)}>
                           <Gavel className="h-4 w-4 mr-2" />
